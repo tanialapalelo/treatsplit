@@ -15,10 +15,7 @@ export default function Home() {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
+              <Link href={"/"}>🎂 TreatSplit</Link>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
           </div>
@@ -27,7 +24,14 @@ export default function Home() {
           <Hero />
           <main className="flex-1 flex flex-col gap-6 px-4">
             <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+            
+            <Link
+              href="/dashboard/"
+              className="bg-black text-white px-4 py-2 rounded hover:bg-zinc-800 w-fit"
+            >
+              Go to Dashboard
+            </Link>
+
           </main>
         </div>
 
