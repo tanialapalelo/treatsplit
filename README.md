@@ -29,24 +29,24 @@ Built with **Next.js, Supabase, TypeScript, and TailwindCSS**.
 ## 📦 Installation & Setup
 
 1. **Clone the repository**
-   ```bash
+   ```sh
    git clone https://github.com/tanialapalelo/treatsplit.git
    cd treatsplit 
   ```
 2. **Install dependencies**
-   ```bash
+   ```sh
    npm install
    # or
    yarn install
   ```
 3. **Set up environment variables**
-Create a .env.local file with:
-   ```bash
+   Create a .env.local file with:
+   ```sh
     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
   ```
 4. **Run the development server**
-   ```bash
+   ```sh
     npm run dev
     # or
     yarn dev
