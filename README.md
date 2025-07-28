@@ -29,32 +29,36 @@ Built with **Next.js, Supabase, TypeScript, and TailwindCSS**.
 ## 📦 Installation & Setup
 
 1. **Clone the repository**
-   ```sh
+   ```bash
    git clone https://github.com/tanialapalelo/treatsplit.git
-   cd treatsplit 
-  ```
+   cd treatsplit
+   ```
+
 2. **Install dependencies**
-   ```sh
+   ```bash
    npm install
    # or
    yarn install
-  ```
-3. **Set up environment variables**
-   Create a .env.local file with:
-   ```sh
-    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-  ```
+   ```
+
+3. **Set up environment variables**  
+   Create a `.env.local` file with:
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
 4. **Run the development server**
-   ```sh
-    npm run dev
-    # or
-    yarn dev
-  ```
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
 5. **Visit**
-  ```bash
-    http://localhost:3000
-  ```
+   ```
+   http://localhost:3000
+   ```
 
 ## 📜 License
 MIT © 2025 TreatSplit Team
