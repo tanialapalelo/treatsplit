@@ -27,7 +27,7 @@ export async function adminUpdateUser(
   userId: string,
   patch: Partial<{ name: string; birthday: string }>
 ) {
-  await assertIsAdmin(currentUserId);
+  await isSystemAdmin(currentUserId);
 
   const supabase = await createClient();
   const { error } = await supabase.from("users").update(patch).eq("id", userId);

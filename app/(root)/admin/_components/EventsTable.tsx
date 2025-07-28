@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { adminUpdateEvent, adminDeleteEvent } from "@/lib/actions/admin/events";
+import { adminDeleteEvent, adminUpdateEvent } from "@/lib/actions/admin/events";
 import { AdminEventRow } from "@/lib/types/shared.types";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   currentUserId: string;
@@ -17,10 +17,10 @@ export default function EventsTable({ currentUserId, events: initialEvents }: Pr
   const [events, setEvents] = useState<AdminEventRow[]>(initialEvents);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const handleSave = async (eventId: string, field: keyof AdminEventRow, value: string) => {
+  const handleSave = async (eventId: string, patch: Partial<AdminEventRow>) => {
     try {
-      await adminUpdateEvent(currentUserId, eventId, { [field]: value } as any);
-      setEvents((prev) => prev.map((e) => (e.id === eventId ? { ...e, [field]: value } : e)));
+      await adminUpdateEvent(currentUserId, eventId, patch);
+      setEvents((prev) => prev.map((e) => (e.id === eventId ? { ...e, ...patch } : e)));
       toast.success("Event updated!");
     } catch (err) {
       console.error(err);
@@ -43,39 +43,67 @@ export default function EventsTable({ currentUserId, events: initialEvents }: Pr
   };
 
   return (
-    <div className="overflow-x-auto space-y-3">
-      {events.map((e) => (
-        <div key={e.id} className="flex gap-2 items-center border rounded p-2">
-          <Input
-            defaultValue={e.title}
-            onBlur={(ev) => handleSave(e.id, "title", ev.target.value)}
-            className="max-w-xs"
-          />
-          <Input
-            type="date"
-            defaultValue={e.date}
-            onBlur={(ev) => handleSave(e.id, "date", ev.target.value)}
-          />
-          <select
-            defaultValue={e.status}
-            onBlur={(ev) => handleSave(e.id, "status", ev.target.value)}
-            className="border p-1 rounded"
-          >
-            <option value="planning">Planning</option>
-            <option value="active">Active</option>
-            <option value="done">Done</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-          <div className="text-xs text-muted-foreground ml-auto">
-            {e.teams?.name ?? "No team"}
-          </div>
-          <Button variant="destructive" size="sm" onClick={() => setDeleteId(e.id)}>
-            Delete
-          </Button>
-        </div>
-      ))}
+    <>
+      <div className="hidden md:grid md:grid-cols-5 gap-3 border-b pb-2 font-semibold text-sm">
+        <div>Title</div>
+        <div>Date</div>
+        <div>Status</div>
+        <div>Team</div>
+        <div className="text-right">Action</div>
+      </div>
 
-      <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+      <div className="space-y-3">
+        {events.map((e) => (
+          <div
+            key={e.id}
+            className="grid grid-cols-1 md:grid-cols-5 gap-2 items-center border rounded p-3"
+          >
+            <div>
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Title</span>
+              <Input
+                defaultValue={e.title}
+                onBlur={(ev) => handleSave(e.id, { title: ev.target.value })}
+              />
+            </div>
+
+            <div>
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Date</span>
+              <Input
+                type="date"
+                defaultValue={e.date}
+                onBlur={(ev) => handleSave(e.id, { date: ev.target.value })}
+              />
+            </div>
+
+            <div>
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Status</span>
+              <select
+                defaultValue={e.status}
+                className="border p-2 rounded w-full md:max-w-[160px]"
+                onBlur={(ev) => handleSave(e.id, { status: ev.target.value as any })}
+              >
+                <option value="planning">planning</option>
+                <option value="active">active</option>
+                <option value="done">done</option>
+                <option value="cancelled">cancelled</option>
+              </select>
+            </div>
+
+            <div className="text-sm">
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Team</span>
+              {e.team_name}
+            </div>
+
+            <div className="flex md:justify-end">
+              <Button variant="destructive" size="sm" onClick={() => setDeleteId(e.id)}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Dialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete this event?</DialogTitle>
@@ -91,6 +119,6 @@ export default function EventsTable({ currentUserId, events: initialEvents }: Pr
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

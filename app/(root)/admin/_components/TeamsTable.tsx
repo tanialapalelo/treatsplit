@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { adminUpdateTeam, adminDeleteTeam } from "@/lib/actions/admin/teams";
 import { AdminTeamRow } from "@/lib/types/shared.types";
@@ -43,30 +49,57 @@ export default function TeamsTable({ currentUserId, teams: initialTeams }: Props
   };
 
   return (
-    <div className="overflow-x-auto space-y-3">
-      {teams.map((t) => (
-        <div key={t.id} className="flex gap-2 items-center border rounded p-2">
-          <Input
-            defaultValue={t.name}
-            onBlur={(e) => handleSave(t.id, "name", e.target.value)}
-            className="max-w-xs"
-          />
-          <select
-            defaultValue={t.currency}
-            onBlur={(e) => handleSave(t.id, "currency", e.target.value)}
-            className="border p-1 rounded"
-          >
-            <option value="IDR">IDR</option>
-            <option value="USD">USD</option>
-          </select>
-          <div className="text-xs text-muted-foreground ml-auto">{t.created_at}</div>
-          <Button variant="destructive" size="sm" onClick={() => setDeleteId(t.id)}>
-            Delete
-          </Button>
-        </div>
-      ))}
+    <>
+      {/* desktop header */}
+      <div className="hidden md:grid md:grid-cols-4 gap-3 border-b pb-2 font-semibold text-sm">
+        <div>Name</div>
+        <div>Currency</div>
+        <div>Created</div>
+        <div className="text-right">Action</div>
+      </div>
 
-      <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+      <div className="space-y-3">
+        {teams.map((t) => (
+          <div
+            key={t.id}
+            className="grid grid-cols-1 md:grid-cols-4 gap-2 items-center border rounded p-3"
+          >
+            <div>
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Name</span>
+              <Input
+                defaultValue={t.name}
+                onBlur={(e) => handleSave(t.id, "name", e.target.value)}
+                className="md:max-w-xs"
+              />
+            </div>
+
+            <div>
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Currency</span>
+              <select
+                defaultValue={t.currency}
+                onBlur={(e) => handleSave(t.id, "currency", e.target.value)}
+                className="border p-2 rounded w-full md:max-w-[120px]"
+              >
+                <option value="IDR">IDR</option>
+                <option value="USD">USD</option>
+              </select>
+            </div>
+
+            <div className="text-xs text-muted-foreground">
+              <span className="md:hidden block text-xs text-muted-foreground mb-1">Created</span>
+              {t.created_at}
+            </div>
+
+            <div className="flex md:justify-end">
+              <Button variant="destructive" size="sm" onClick={() => setDeleteId(t.id)}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Dialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete this team?</DialogTitle>
@@ -82,6 +115,6 @@ export default function TeamsTable({ currentUserId, teams: initialTeams }: Props
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

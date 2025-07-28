@@ -1,9 +1,9 @@
-// app/page.tsx
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -11,7 +11,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if(user) redirect("/dashboard");
+  if (user) redirect("/dashboard");
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -60,8 +60,14 @@ export default async function Home() {
 
           {/* Right side hero mock / illustration placeholder */}
           <div className="hidden md:block">
-            <div className="w-full h-[380px] rounded-xl border bg-muted flex items-center justify-center text-muted-foreground">
-              (Put your product screenshot / mock here)
+            <div className="w-full h-[200px] rounded-xl border bg-muted relative overflow-hidden">
+              <Image
+                src="/treatsplit-dashboard.png"
+                alt="TreatSplit"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
         </div>

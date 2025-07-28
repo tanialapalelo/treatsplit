@@ -5,16 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Database, Users, Calendar, DollarSign } from "lucide-react";
 import AdminStats from "./AdminStats";
 import UsersTable from "./UsersTable";
-import { 
-  AdminStats as AdminStatsType, 
+import TeamsTable from "./TeamsTable";
+import EventsTable from "./EventsTable";
+import ContributionsTable from "./ContributionsTable";
+import {
+  AdminStats as AdminStatsType,
   AdminUserRow,
   AdminTeamRow,
   AdminEventRow,
   AdminContributionRow,
 } from "@/lib/types/shared.types";
-import TeamsTable from "./TeamsTable";
-import EventsTable from "./EventsTable";
-import ContributionsTable from "./ContributionsTable";
 
 type Props = {
   currentUserId: string;
@@ -36,6 +36,7 @@ export default function AdminPanelClient({
   return (
     <div className="container max-w-7xl mx-auto space-y-6 py-6">
       <AdminStats stats={stats} />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -43,15 +44,22 @@ export default function AdminPanelClient({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="users">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="users" className="flex items-center gap-2">
-                <Users className="h-4 w-4" /> Users
-              </TabsTrigger>
-              <TabsTrigger value="teams">Teams</TabsTrigger>
-              <TabsTrigger value="events">Events</TabsTrigger>
-              <TabsTrigger value="contributions">Contributions</TabsTrigger>
-            </TabsList>
+          <Tabs defaultValue="users" className="w-full">
+            {/* scrollable on mobile, grid on md+ */}
+            <div className="overflow-x-auto">
+              <TabsList className="inline-flex w-max md:grid md:w-full md:grid-cols-4">
+                <TabsTrigger value="users" className="flex items-center gap-2">
+                  <Users className="h-4 w-4" /> Users
+                </TabsTrigger>
+                <TabsTrigger value="teams">Teams</TabsTrigger>
+                <TabsTrigger value="events" className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" /> Events
+                </TabsTrigger>
+                <TabsTrigger value="contributions" className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4" /> Contributions
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="users" className="mt-6">
               <UsersTable currentUserId={currentUserId} users={users} />
