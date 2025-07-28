@@ -3,12 +3,15 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if(user) redirect("/dashboard");
 
   return (
     <main className="min-h-screen flex flex-col">

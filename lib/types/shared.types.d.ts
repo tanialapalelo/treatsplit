@@ -84,3 +84,56 @@ export interface FoodPollProps {
    onVote: (foodId: string) => Promise<void>;
    disabled?: boolean;
 };
+
+
+
+export interface AdminStats {
+   totalUsers: number;
+   activeTeams: number;
+   activeEvents: number;
+   totalContributions: number;
+ }
+ 
+ /** USERS */
+ export interface AdminUserRow {
+   id: string;
+   name: string | null;
+   birthday: string | null;
+   // We don't have email in public.users (unless you made a view).
+   email: string | null;
+ }
+ 
+ /** TEAMS */
+ export interface AdminTeamRow {
+   id: string;
+   name: string;
+   currency: Currency;
+   created_at: string;
+ }
+ 
+ /** EVENTS */
+ export type EventStatus = "planning" | "active" | "done" | "cancelled";
+ 
+ export interface AdminEventRow {
+   id: string;
+   team_id: string;
+   date: string;
+   status: EventStatus;
+   note: string | null;
+   title: string;
+   created_at: string;
+   teams: { name: string } | null;
+   birthday_person: { name: string } | null;
+ }
+ 
+ /** CONTRIBUTIONS */
+ export interface AdminContributionRow {
+   id: string;
+   event_id: string;
+   user_id: string;
+   amount: number;
+   paid: boolean;
+   created_at: string;
+   users: { name: string | null } | null;
+   events: { date: string } | null;
+ }
